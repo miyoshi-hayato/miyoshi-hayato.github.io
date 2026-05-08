@@ -115,15 +115,24 @@ function renderLlmsTxt(meta) {
 
 ${meta.description}
 
+## 役職
+snaq.me CTO & Co-Founder（2015年〜）
+
+## 主な実績
+- 売上 5 倍成長、LTV 15% 向上、出荷生産性 8 倍、誤ピック率 1/10
+- エンジニア組織 1→20 名、離職率 5% 未満
+- AWS アーキテクチャ賞 2 年連続ファイナリスト
+- 生成 AI 活用で開発リードタイム 10 倍短縮
+
 ## 受け付けている依頼
-- 副業・業務委託（食品・消費財メーカーの DX、製造×デジタル）
-- 顧問・アドバイザリー
-- 講演・登壇（製造業向け）
-- 取材・インタビュー
+- 製造業 × デジタルのアドバイザリー（食品・消費財メーカーの DX）
+- 生成 AI 活用の組織導入
+- 技術顧問・CTO 壁打ち
+- 講演・取材・寄稿
 
 ## 専門領域
-食品 D2C × 製造オペレーション、サプライチェーン、業務システム、製造現場の DX。
-snaq.me にてシステムと製造オペレーションを統括。
+食品 D2C × 製造オペレーション、WMS / SCM、業務システム、生成 AI 活用、
+スタートアップ技術戦略、エンジニア組織づくり。
 
 ## 連絡先
 公式サイトの「問い合わせる」ボタンから（メーラーが起動します）。
@@ -160,6 +169,7 @@ function build() {
     title: meta.title || `${meta.name} - Portfolio`,
     description: meta.description || '',
     name: meta.name || '',
+    role_tag: meta.role_tag || '',
     year: new Date().getFullYear(),
     contact_email_b64: contactEmailB64,
     hero: renderHero(sections.Hero),
