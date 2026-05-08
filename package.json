@@ -1,0 +1,17 @@
+{
+  "name": "miyoshi-hayato.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node src/build.mjs",
+    "dev": "node src/build.mjs && python3 -m http.server -d public 8080"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^14.1.3"
+  }
+}

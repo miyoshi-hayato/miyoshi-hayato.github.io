@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:type" content="website">
+<link rel="alternate" type="text/markdown" href="/index.md">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-nav" id="site-nav">
+  <a href="#top" class="brand">{{name}}</a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#works">Works</a></li>
+    <li><a href="#output">Output</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="menu-btn" aria-label="メニュー" onclick="document.getElementById('site-nav').classList.toggle('open')">☰</button>
+  <div class="mobile-menu">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#works">Works</a></li>
+      <li><a href="#output">Output</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+{{hero}}
+</section>
+
+<section class="section" id="about">
+  <div class="label">About</div>
+  <h2>経歴・専門領域</h2>
+  <div class="body">
+{{about}}
+  </div>
+</section>
+
+<section class="section" id="services">
+  <div class="label">Services</div>
+  <h2>提供できる仕事</h2>
+  <div class="services-grid">
+{{services}}
+  </div>
+</section>
+
+<section class="section" id="works">
+  <div class="label">Works</div>
+  <h2>実績・事例</h2>
+  <div class="works-list">
+{{works}}
+  </div>
+</section>
+
+<section class="section" id="output">
+  <div class="label">Output</div>
+  <h2>発信・アウトプット</h2>
+  <div class="output-grid">
+{{output}}
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <h2>仕事・登壇のご相談</h2>
+  <div class="body">
+{{contact}}
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© {{year}} {{name}} · <a href="/index.md">View as Markdown</a></p>
+</footer>
+
+</body>
+</html>
