@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
@@ -10,6 +10,7 @@ const root = resolve(here, '..');
 const SRC_MD = resolve(root, 'content/index.md');
 const TEMPLATE = resolve(root, 'src/template.html');
 const STYLES = resolve(root, 'src/styles.css');
+const ASSETS_DIR = resolve(root, 'src/assets');
 const OUT_DIR = resolve(root, 'public');
 
 const escapeHtml = (s) =>
@@ -202,6 +203,7 @@ function build() {
   copyFileSync(STYLES, resolve(OUT_DIR, 'styles.css'));
   writeFileSync(resolve(OUT_DIR, 'llms.txt'), renderLlmsTxt(meta));
   writeFileSync(resolve(OUT_DIR, '_headers'), HEADERS_CONFIG);
+  const assetCount = copyAssets();
 
   console.log('✓ Built:');
   console.log('  public/index.html');
@@ -209,6 +211,23 @@ function build() {
   console.log('  public/styles.css');
   console.log('  public/llms.txt');
   console.log('  public/_headers');
+  console.log(`  public/ <${assetCount} asset(s)>`);
+}
+
+function copyAssets() {
+  let count = 0;
+  try {
+    const entries = readdirSync(ASSETS_DIR);
+    for (const name of entries) {
+      const src = resolve(ASSETS_DIR, name);
+      if (!statSync(src).isFile()) continue;
+      copyFileSync(src, resolve(OUT_DIR, name));
+      count += 1;
+    }
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err;
+  }
+  return count;
 }
 
 build();
