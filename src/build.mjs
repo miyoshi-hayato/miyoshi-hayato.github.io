@@ -110,19 +110,29 @@ function renderProse(text) {
   return text ? marked.parse(text) : '';
 }
 
+function renderStats(stats) {
+  if (!Array.isArray(stats) || stats.length === 0) return '';
+  return stats
+    .map(
+      (s) =>
+        `    <div class="stat"><span class="num">${escapeHtml(s.num || '')}</span><span class="stat-label">${escapeHtml(s.label || '')}</span></div>`
+    )
+    .join('\n');
+}
+
 function renderLlmsTxt(meta) {
   return `# ${meta.name}
 
 ${meta.description}
 
 ## 役職
-snaq.me CTO & Co-Founder（2015年〜）
+snaq.me CTO / Head of Operations（共同創業、2015年〜）
 
 ## 主な実績
-- 売上 5 倍成長、LTV 15% 向上、出荷生産性 8 倍、誤ピック率 1/10
-- エンジニア組織 1→20 名、離職率 5% 未満
-- AWS アーキテクチャ賞 2 年連続ファイナリスト
-- 生成 AI 活用で開発リードタイム 10 倍短縮
+- 出荷生産性 8 倍 / 誤ピック率 1/10（社内 WMS + 音声ピッキング、2017〜）
+- 売上 5 倍成長 / LTV 15% 向上 / エンジニア組織 1→20 名（離職率 5% 未満）
+- AWS Startup Architecture Award ファイナリスト 2 年連続（2018, 2019）
+- 生成 AI 活用で開発リードタイム 10 倍短縮、現場スタッフまで AI 利用が浸透
 
 ## 受け付けている依頼
 - 製造業 × デジタルのアドバイザリー（食品・消費財メーカーの DX）
@@ -172,6 +182,7 @@ function build() {
     role_tag: meta.role_tag || '',
     year: new Date().getFullYear(),
     contact_email_b64: contactEmailB64,
+    stats: renderStats(meta.stats),
     hero: renderHero(sections.Hero),
     about: renderProse(sections.About),
     services: renderServices(sections.Services),

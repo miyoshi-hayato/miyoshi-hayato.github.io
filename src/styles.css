@@ -162,6 +162,122 @@ a { color: inherit; }
 }
 
 /* ==========================================================
+   Stats strip — 製造業向けの定量実績ハイライト
+   ========================================================== */
+.stats-strip {
+  background: var(--navy);
+  color: #ffffff;
+  padding: 56px 32px;
+  border-bottom: 1px solid var(--navy-2);
+}
+
+.stat-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.stat {
+  text-align: center;
+  padding: 0 8px;
+  position: relative;
+}
+
+.stat + .stat::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.stat .num {
+  display: block;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 12px;
+  font-feature-settings: "tnum";
+  color: var(--accent-soft);
+  letter-spacing: -0.02em;
+}
+
+.stat .stat-label {
+  display: block;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+/* ==========================================================
+   About body — h3 / list / strong / link 強化
+   ========================================================== */
+.section .body h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 32px 0 14px;
+  letter-spacing: -0.005em;
+  position: relative;
+  padding-left: 16px;
+}
+
+.section .body h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+}
+
+.section .body ul {
+  list-style: none;
+  margin: 12px 0 16px;
+  padding: 0;
+}
+
+.section .body li {
+  position: relative;
+  padding: 6px 0 6px 20px;
+  font-size: 15px;
+  color: var(--ink-muted);
+  line-height: 1.85;
+}
+
+.section .body li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.section .body strong {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.section .body a {
+  color: var(--navy);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+
+.section .body a:hover {
+  color: var(--accent);
+}
+
+/* ==========================================================
    Section base
    ========================================================== */
 .section {
@@ -457,4 +573,8 @@ a { color: inherit; }
   .work-item .tag { grid-column: 2; grid-row: 2; justify-self: start; margin-top: 4px; }
 
   .contact { padding: 72px 20px; }
+
+  .stats-strip { padding: 40px 20px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
+  .stat + .stat::before { display: none; }
 }
