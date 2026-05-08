@@ -37,7 +37,10 @@
 <main id="top">
 
 <section class="hero">
+  <div class="hero-inner">
+    <span class="role-tag">FOOD D2C × MANUFACTURING OPS</span>
 {{hero}}
+  </div>
 </section>
 
 <section class="section" id="about">
@@ -77,6 +80,8 @@
   <div class="body">
 {{contact}}
   </div>
+  <button class="contact-btn" data-m="{{contact_email_b64}}" type="button">問い合わせる →</button>
+  <span class="contact-note">クリックでメーラーが起動します</span>
 </section>
 
 </main>
@@ -84,6 +89,18 @@
 <footer class="site-footer">
   <p>© {{year}} {{name}} · <a href="/index.md">View as Markdown</a></p>
 </footer>
+
+<script>
+  document.querySelectorAll('.contact-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var enc = btn.getAttribute('data-m') || '';
+      if (!enc) return;
+      var addr = atob(enc);
+      var subject = encodeURIComponent('お問い合わせ ({{name}} のサイトより)');
+      window.location.href = 'mailto:' + addr + '?subject=' + subject;
+    });
+  });
+</script>
 
 </body>
 </html>

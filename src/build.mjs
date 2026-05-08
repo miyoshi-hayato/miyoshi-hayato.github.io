@@ -43,8 +43,8 @@ function renderHero(text) {
   const pitchHtml = paragraphs
     .slice(1)
     .map((p) => `<p>${escapeHtml(p)}</p>`)
-    .join('\n  ');
-  return `<h1>${escapeHtml(headline)}</h1>${pitchHtml ? `\n  ${pitchHtml}` : ''}`;
+    .join('\n    ');
+  return `    <h1>${escapeHtml(headline)}</h1>${pitchHtml ? `\n    ${pitchHtml}` : ''}`;
 }
 
 function renderServices(text) {
@@ -110,22 +110,23 @@ function renderProse(text) {
   return text ? marked.parse(text) : '';
 }
 
-function renderLlmsTxt(meta, sections, deployedUrl = '/index.md') {
+function renderLlmsTxt(meta) {
   return `# ${meta.name}
 
 ${meta.description}
 
 ## 受け付けている依頼
-- 副業・業務委託
+- 副業・業務委託（食品・消費財メーカーの DX、製造×デジタル）
 - 顧問・アドバイザリー
-- 講演・登壇
+- 講演・登壇（製造業向け）
 - 取材・インタビュー
 
-## 連絡先
-${meta.contact_email}
+## 専門領域
+食品 D2C × 製造オペレーション、サプライチェーン、業務システム、製造現場の DX。
+snaq.me にてシステムと製造オペレーションを統括。
 
-## 詳細
-全文は ${deployedUrl} を参照してください。
+## 連絡先
+公式サイトの「問い合わせる」ボタンから（メーラーが起動します）。
 `;
 }
 
@@ -149,12 +150,18 @@ function build() {
   const { data: meta, content } = matter(raw);
   const sections = parseSections(content);
 
+  if (!meta.contact_email) {
+    throw new Error('content/index.md の front matter に contact_email が必要です');
+  }
+  const contactEmailB64 = Buffer.from(meta.contact_email, 'utf8').toString('base64');
+
   const template = readFileSync(TEMPLATE, 'utf8');
   const html = applyTemplate(template, {
     title: meta.title || `${meta.name} - Portfolio`,
     description: meta.description || '',
     name: meta.name || '',
     year: new Date().getFullYear(),
+    contact_email_b64: contactEmailB64,
     hero: renderHero(sections.Hero),
     about: renderProse(sections.About),
     services: renderServices(sections.Services),
@@ -163,16 +170,21 @@ function build() {
     contact: renderProse(sections.Contact),
   });
 
+  // Redacted markdown for public — strip contact_email from front matter
+  const redactedMeta = { ...meta };
+  delete redactedMeta.contact_email;
+  const redactedMd = matter.stringify(content, redactedMeta);
+
   mkdirSync(OUT_DIR, { recursive: true });
   writeFileSync(resolve(OUT_DIR, 'index.html'), html);
-  copyFileSync(SRC_MD, resolve(OUT_DIR, 'index.md'));
+  writeFileSync(resolve(OUT_DIR, 'index.md'), redactedMd);
   copyFileSync(STYLES, resolve(OUT_DIR, 'styles.css'));
-  writeFileSync(resolve(OUT_DIR, 'llms.txt'), renderLlmsTxt(meta, sections));
+  writeFileSync(resolve(OUT_DIR, 'llms.txt'), renderLlmsTxt(meta));
   writeFileSync(resolve(OUT_DIR, '_headers'), HEADERS_CONFIG);
 
   console.log('✓ Built:');
   console.log('  public/index.html');
-  console.log('  public/index.md');
+  console.log('  public/index.md  (contact_email redacted)');
   console.log('  public/styles.css');
   console.log('  public/llms.txt');
   console.log('  public/_headers');
